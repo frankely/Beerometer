@@ -18,8 +18,8 @@ public class BeerProvider extends ContentProvider {
     private static final UriMatcher sUriMatcher = buildUriMatcher();
     private BeerDbHelper mOpenHelper;
 
-    static final int BEER = 100;
-    static final int BEERS_ON_SALE = 101;
+    public static final int BEER = 100;
+    public static final int BEERS_ON_SALE = 101;
 
 
     private static final SQLiteQueryBuilder sBeersOnSaleQueryBuilder;
@@ -49,7 +49,7 @@ public class BeerProvider extends ContentProvider {
     }
 
 
-    static UriMatcher buildUriMatcher() {
+    public static UriMatcher buildUriMatcher() {
         final UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
         final String authority = BeerContract.CONTENT_AUTHORITY;
 

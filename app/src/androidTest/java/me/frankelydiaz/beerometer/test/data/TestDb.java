@@ -109,15 +109,7 @@ public class TestDb extends AndroidTestCase {
         BeerDbHelper dbHelper = new BeerDbHelper(mContext);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
-        ContentValues beerValues = new ContentValues();
-        beerValues.put(BeerContract.BeerEntry.COLUMN_NAME,"Keystone Ice");
-        beerValues.put(BeerContract.BeerEntry.COLUMN_IMAGE_URL,"http://www.thebeerstore.ca/sites/default/files/styles/brand_hero/public/brand/hero/Key_ICE_355mL.jpg?itok=UDkvF6Rl");
-        beerValues.put(BeerContract.BeerEntry.COLUMN_ABV,5.5);
-        beerValues.put(BeerContract.BeerEntry.COLUMN_CATEGORY,"Discount");
-        beerValues.put(BeerContract.BeerEntry.COLUMN_TYPE,"Discount");
-        beerValues.put(BeerContract.BeerEntry.COLUMN_BREWER,"Molson");
-        beerValues.put(BeerContract.BeerEntry.COLUMN_COUNTRY,"Canada");
-        beerValues.put(BeerContract.BeerEntry.COLUMN_ON_SALE,"true");
+        ContentValues beerValues = TestUtilities.getBeerValues();
 
 
         long beerRowId = db.insert(BeerContract.BeerEntry.TABLE_NAME, null, beerValues);
@@ -134,19 +126,21 @@ public class TestDb extends AndroidTestCase {
         );
 
         // Move the cursor to the first valid database row and check to see if we have any rows
-        assertTrue( "Error: No Records returned from location query", beerCursor.moveToFirst() );
+        assertTrue("Error: No Records returned from location query", beerCursor.moveToFirst());
 
         // Fifth Step: Validate the location Query
         TestUtilities.validateCurrentRecord("testInsertReadDb weatherEntry failed to validate",
                 beerCursor, beerValues);
 
         // Move the cursor to demonstrate that there is only one record in the database
-        assertFalse( "Error: More than one record returned from weather query",
-                beerCursor.moveToNext() );
+        assertFalse("Error: More than one record returned from weather query",
+                beerCursor.moveToNext());
 
         // Sixth Step: Close cursor and database
         beerCursor.close();
         dbHelper.close();
     }
+
+
 
 }
