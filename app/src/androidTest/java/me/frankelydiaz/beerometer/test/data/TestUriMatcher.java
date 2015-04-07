@@ -23,8 +23,7 @@ public class TestUriMatcher extends AndroidTestCase {
         assertEquals("Error: The BEER URI was matched incorrectly.",
                 testMatcher.match(TEST_BEER_DIR), BeerProvider.BEER);
 
-        assertEquals("Error: The BEER ON SALE URI was matched incorrectly.",
-                testMatcher.match(TEST_BEER_WITH_LOCATION_DIR), BeerProvider.BEERS_ON_SALE);
+
 
     }
 

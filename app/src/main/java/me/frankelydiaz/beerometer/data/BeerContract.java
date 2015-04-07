@@ -40,6 +40,9 @@ public class BeerContract {
         public static final String CONTENT_TYPE =
                 ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_BEER;
 
+        public static final String CONTENT_ITEM_TYPE =
+                ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + CONTENT_AUTHORITY + "/" + PATH_BEER;
+
         public static final String TABLE_NAME = "beer";
 
         public static final String COLUMN_NAME = "name";
@@ -52,6 +55,7 @@ public class BeerContract {
         public static final String COLUMN_ON_SALE = "on_sale";
 
 
+
         public static Uri buildBeerUri() {
             return CONTENT_URI.buildUpon().build();
         }
@@ -59,7 +63,7 @@ public class BeerContract {
             return ContentUris.withAppendedId(CONTENT_URI, id);
         }
 
-        public static String getBeerOnSaleFromUri(Uri uri) {
+        public static String getBeerIdFromUri(Uri uri) {
             return uri.getPathSegments().get(1);
         }
     }

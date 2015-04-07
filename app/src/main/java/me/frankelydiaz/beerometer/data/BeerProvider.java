@@ -19,29 +19,41 @@ public class BeerProvider extends ContentProvider {
     private BeerDbHelper mOpenHelper;
 
     public static final int BEER = 100;
-    public static final int BEERS_ON_SALE = 101;
+    public static final int BEER_DETAIL = 200;
 
 
     private static final SQLiteQueryBuilder sBeersOnSaleQueryBuilder;
 
     static {
-       sBeersOnSaleQueryBuilder = new SQLiteQueryBuilder();
+        sBeersOnSaleQueryBuilder = new SQLiteQueryBuilder();
+        sBeersOnSaleQueryBuilder.setTables(BeerContract.BeerEntry.TABLE_NAME);
     }
 
-    private static final String sBeerSelection =
+    private static final String sBeerOnSaleSelection =
             BeerContract.BeerEntry.TABLE_NAME +
                     "." + BeerContract.BeerEntry.COLUMN_ON_SALE + " = ? ";
 
 
-    private Cursor getBeersOnSale(
-            Uri uri, String[] projection, String sortOrder) {
-        String beerOnSale = BeerContract.BeerEntry.getBeerOnSaleFromUri(uri);
-       
+    private Cursor getBeers(String[] projection, String sortOrder) {
+
 
         return sBeersOnSaleQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                 projection,
-                sBeerSelection,
-                new String[]{beerOnSale},
+                sBeerOnSaleSelection,
+                new String[]{"true"},
+                null,
+                null,
+                sortOrder
+        );
+    }
+
+    private Cursor getBeer(Uri uri, String[] projection, String sortOrder) {
+
+
+        return sBeersOnSaleQueryBuilder.query(mOpenHelper.getReadableDatabase(),
+                projection,
+                null,
+                null,
                 null,
                 null,
                 sortOrder
@@ -55,7 +67,7 @@ public class BeerProvider extends ContentProvider {
 
 
         matcher.addURI(authority, BeerContract.PATH_BEER, BEER);
-        matcher.addURI(authority, BeerContract.PATH_BEER + "/*", BEERS_ON_SALE);
+        //matcher.addURI(authority, BeerContract.PATH_BEER + "/*", BEERS_ON_SALE);
 
         return matcher;
     }
@@ -75,13 +87,18 @@ public class BeerProvider extends ContentProvider {
     @Override
     public String getType(Uri uri) {
 
-        // Use the Uri Matcher to determine what kind of URI this is.
+
         final int match = sUriMatcher.match(uri);
 
         switch (match) {
-            // Student: Uncomment and fill out these two cases
-            case BEERS_ON_SALE:
+
+            case BEER:
                 return BeerContract.BeerEntry.CONTENT_TYPE;
+
+            case BEER_DETAIL:
+                return BeerContract.BeerEntry.CONTENT_ITEM_TYPE;
+
+
             default:
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
         }
@@ -94,8 +111,12 @@ public class BeerProvider extends ContentProvider {
         Cursor retCursor;
         switch (sUriMatcher.match(uri)) {
 
-            case BEERS_ON_SALE: {
-                retCursor = getBeersOnSale(uri, projection, sortOrder);
+            case BEER: {
+                retCursor = getBeers(projection, sortOrder);
+                break;
+            }
+            case BEER_DETAIL: {
+                retCursor = getBeer(uri, projection, sortOrder);
                 break;
             }
 
@@ -119,7 +140,7 @@ public class BeerProvider extends ContentProvider {
         switch (match) {
             case BEER: {
                 normalizeDate(values);
-                long _id = db.insert(BeerContract.BeerEntry.TABLE_NAME, null, values);
+                long _id = db.insertWithOnConflict(BeerContract.BeerEntry.TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_REPLACE);
                 if (_id > 0)
                     returnUri = BeerContract.BeerEntry.buildBeerUri(_id);
                 else
@@ -192,7 +213,7 @@ public class BeerProvider extends ContentProvider {
                 try {
                     for (ContentValues value : values) {
                         normalizeDate(value);
-                        long _id = db.insert(BeerContract.BeerEntry.TABLE_NAME, null, value);
+                        long _id = db.insertWithOnConflict(BeerContract.BeerEntry.TABLE_NAME, null, value,SQLiteDatabase.CONFLICT_REPLACE);
                         if (_id != -1) {
                             returnCount++;
                         }

@@ -30,7 +30,6 @@ public class BeerListFragment extends Fragment implements LoaderManager.LoaderCa
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        updateBeers();
 
         // The CursorAdapter will take data from our cursor and populate the ListView.
         mBeerAdapter = new BeerAdapter(getActivity(), null, 0);
@@ -45,6 +44,13 @@ public class BeerListFragment extends Fragment implements LoaderManager.LoaderCa
         return rootView;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        updateBeers();
+    }
+
     private void updateBeers() {
         FetchBeerTask beerTask = new FetchBeerTask(getActivity());
         beerTask.execute();
@@ -53,10 +59,10 @@ public class BeerListFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
-        Uri weatherForLocationUri = BeerContract.BeerEntry.buildBeerUri();
+        Uri beerUri = BeerContract.BeerEntry.buildBeerUri();
 
         return new CursorLoader(getActivity(),
-                weatherForLocationUri,
+                beerUri,
                 BEER_COLUMNS,
                 null,
                 null,

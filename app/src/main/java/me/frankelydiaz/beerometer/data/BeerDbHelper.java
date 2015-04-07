@@ -9,7 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class BeerDbHelper extends SQLiteOpenHelper {
     // If you change the database schema, you must increment the database version.
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 5;
 
     public static final String DATABASE_NAME = "beerometer.db";
 
@@ -22,9 +22,9 @@ public class BeerDbHelper extends SQLiteOpenHelper {
         // Create a table to hold locations.  A location consists of the string supplied in the
         // location setting, the city name, and the latitude and longitude
         final String SQL_CREATE_BEER_TABLE = "CREATE TABLE " + BeerContract.BeerEntry.TABLE_NAME + " (" +
-                BeerContract.BeerEntry._ID + " INTEGER PRIMARY KEY," +
-                BeerContract.BeerEntry.COLUMN_NAME + " TEXT UNIQUE NOT NULL, " +
-                BeerContract.BeerEntry.COLUMN_IMAGE_URL + " TEXT NOT NULL, " +
+                BeerContract.BeerEntry._ID + " INTEGER," +
+                BeerContract.BeerEntry.COLUMN_NAME + " TEXT NOT NULL, " +
+                BeerContract.BeerEntry.COLUMN_IMAGE_URL + " TEXT NULL, " +
                 BeerContract.BeerEntry.COLUMN_CATEGORY + " TEXT NOT NULL, " +
                 BeerContract.BeerEntry.COLUMN_ABV + " REAL NOT NULL ," +
                 BeerContract.BeerEntry.COLUMN_TYPE + " TEXT NOT NULL , " +

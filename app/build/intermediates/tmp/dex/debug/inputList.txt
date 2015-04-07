@@ -1,0 +1,11 @@
+E:\Developer\Personal\Beerometer\app\build\intermediates\classes\debug
+E:\Developer\Personal\Beerometer\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-21c493b080b31c4ca3cb161c7f268713afbc8f33.jar
+E:\Developer\Personal\Beerometer\app\build\intermediates\pre-dexed\debug\logansquare-1.0.6-1e0e47cd4168a7fb4d2c2a7638757328d89b8a8f.jar
+E:\Developer\Personal\Beerometer\app\build\intermediates\pre-dexed\debug\classes-effe847c69c446f1742e2c866ede0d2cf0284adf.jar
+E:\Developer\Personal\Beerometer\app\build\intermediates\pre-dexed\debug\spring-android-core-2.0.0.M1-a356d9f5ce0736c205d3ee0dea04131c48332eb8.jar
+E:\Developer\Personal\Beerometer\app\build\intermediates\pre-dexed\debug\spring-android-rest-template-2.0.0.M1-22548e46b138c6c47985098b2d63fcefb13154e4.jar
+E:\Developer\Personal\Beerometer\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-81816865168ff3fac7d1830d4b5dcb2015179c2c.jar
+E:\Developer\Personal\Beerometer\app\build\intermediates\pre-dexed\debug\classes-4f85f5c8473b4d70d65601b00a086c8395ec2271.jar
+E:\Developer\Personal\Beerometer\app\build\intermediates\pre-dexed\debug\jackson-core-2.5.1-934441c20f1a5e61c4529635f9409c9b64d31feb.jar
+E:\Developer\Personal\Beerometer\app\build\intermediates\pre-dexed\debug\classes-cabeb808959ad3ab2997eb42005192642ffb6a72.jar
+E:\Developer\Personal\Beerometer\app\build\intermediates\pre-dexed\debug\classes-5fb415bfc94bba28a51cecfc962fe3b1be57eae1.jar

@@ -3,6 +3,7 @@ package me.frankelydiaz.beerometer.task;
 import android.content.ContentValues;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.json.JSONException;
 
@@ -27,8 +28,7 @@ public class FetchBeerTask extends AsyncTask<String, Void, Void> {
     }
 
 
-    private void storeData(List<Beer> beers)
-            throws JSONException {
+    private void storeData(List<Beer> beers) {
 
         if (beers.isEmpty())
             return;
@@ -55,12 +55,17 @@ public class FetchBeerTask extends AsyncTask<String, Void, Void> {
         beerRows.toArray(beerArray);
 
         int inserted = mContext.getContentResolver().bulkInsert(BeerContract.BeerEntry.CONTENT_URI, beerArray);
+
+        Log.d(LOG_TAG, "inserted: " + inserted);
+
     }
 
     @Override
     protected Void doInBackground(String... params) {
 
         List<Beer> beers = BeerWebService.getBeers();
+
+        storeData(beers);
 
         return null;
     }

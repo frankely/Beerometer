@@ -90,8 +90,8 @@ public class TestProvider extends AndroidTestCase {
         type = mContext.getContentResolver().getType(
                 BeerContract.BeerEntry.buildBeerUri(beerId));
 
-        assertEquals("Error: the BeerEntry CONTENT_URI with location should return BeerEntry.CONTENT_TYPE",
-                BeerContract.BeerEntry.CONTENT_TYPE, type);
+        assertEquals("Error: the BeerEntry CONTENT_URI by id should return BeerEntry.CONTENT_ITEM_TYPE",
+                BeerContract.BeerEntry.CONTENT_ITEM_TYPE, type);
 
     }
 
@@ -158,7 +158,7 @@ public class TestProvider extends AndroidTestCase {
 
         ContentValues[] returnContentValues = new ContentValues[BULK_INSERT_RECORDS_TO_INSERT];
 
-        for ( int i = 0; i < BULK_INSERT_RECORDS_TO_INSERT; i++, i++) {
+        for ( int i = 0; i < BULK_INSERT_RECORDS_TO_INSERT; i++) {
             ContentValues beerValues = new ContentValues();
             beerValues.put(BeerContract.BeerEntry.COLUMN_NAME,"Keystone Ice" + i);
             beerValues.put(BeerContract.BeerEntry.COLUMN_IMAGE_URL,"http://www.thebeerstore.ca/sites/default/files/styles/brand_hero/public/brand/hero/Key_ICE_355mL.jpg?itok=UDkvF6Rl");
@@ -178,28 +178,6 @@ public class TestProvider extends AndroidTestCase {
     // implementation, which just inserts records one-at-a-time, so really do implement the
     // BulkInsert ContentProvider function.
     public void testBulkInsert() {
-        // first, let's create a location value
-        ContentValues testValues = TestUtilities.getBeerValues();
-        Uri locationUri = mContext.getContentResolver().insert(BeerContract.BeerEntry.CONTENT_URI, testValues);
-        long beerRowId = ContentUris.parseId(locationUri);
-
-        // Verify we got a row back.
-        assertTrue(beerRowId != -1);
-
-        // Data's inserted.  IN THEORY.  Now pull some out to stare at it and verify it made
-        // the round trip.
-
-        // A cursor is your primary interface to the query results.
-        Cursor cursor = mContext.getContentResolver().query(
-                BeerContract.BeerEntry.CONTENT_URI,
-                null, // leaving "columns" null just returns all the columns.
-                null, // cols for "where" clause
-                null, // values for "where" clause
-                null  // sort order
-        );
-
-        TestUtilities.validateCursor("testBulkInsert. Error validating LocationEntry.",
-                cursor, testValues);
 
         // Now we can bulkInsert some Beer.  In fact, we only implement BulkInsert for Beer
         // entries.  With ContentProviders, you really only have to implement the features you
@@ -218,10 +196,10 @@ public class TestProvider extends AndroidTestCase {
         BeerObserver.waitForNotificationOrFail();
         mContext.getContentResolver().unregisterContentObserver(BeerObserver);
 
-        assertEquals(insertCount, BULK_INSERT_RECORDS_TO_INSERT);
+        assertEquals(BULK_INSERT_RECORDS_TO_INSERT,insertCount);
 
         // A cursor is your primary interface to the query results.
-        cursor = mContext.getContentResolver().query(
+        Cursor cursor = mContext.getContentResolver().query(
                 BeerContract.BeerEntry.CONTENT_URI,
                 null, // leaving "columns" null just returns all the columns.
                 null, // cols for "where" clause
@@ -230,7 +208,7 @@ public class TestProvider extends AndroidTestCase {
         );
 
         // we should have as many records in the database as we've inserted
-        assertEquals(cursor.getCount(), BULK_INSERT_RECORDS_TO_INSERT);
+        assertEquals(BULK_INSERT_RECORDS_TO_INSERT,cursor.getCount());
 
         // and let's make sure they match the ones we created
         cursor.moveToFirst();
