@@ -1,5 +1,6 @@
 package me.frankelydiaz.beerometer;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import me.frankelydiaz.beerometer.adapter.BeerAdapter;
@@ -32,8 +34,21 @@ public class BeerListFragment extends Fragment implements android.support.v4.app
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
         // Get a reference to the ListView, and attach this adapter to it.
-        ListView listView = (ListView) rootView.findViewById(R.id.beer_list_view);
+        ListView listView = (ListView) rootView.findViewById(R.id.beer_list_listview);
         listView.setAdapter(mBeerAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
+                if (cursor != null) {
+                    Intent intent = new Intent(getActivity(), DetailActivity.class)
+                            .setData(BeerContract.BeerEntry.buildBeerUri(cursor.getLong(BeerAdapter.getBeerColumnIndex(BeerContract.BeerEntry._ID))));
+                    startActivity(intent);
+                }
+            }
+        });
 
 
         return rootView;

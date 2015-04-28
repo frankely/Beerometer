@@ -54,6 +54,10 @@ public class BeerometerSyncAdapter extends AbstractThreadedSyncAdapter {
         List<ContentValues> beerRows = new ArrayList<>();
 
         for (Beer beer : beers) {
+
+            if (beer.imageUrl == null)
+                continue;
+
             ContentValues beerValues = new ContentValues();
             beerValues.put(BeerContract.BeerEntry._ID, beer.beerId);
             beerValues.put(BeerContract.BeerEntry.COLUMN_ABV, beer.abv);
@@ -64,7 +68,7 @@ public class BeerometerSyncAdapter extends AbstractThreadedSyncAdapter {
             beerValues.put(BeerContract.BeerEntry.COLUMN_CATEGORY, beer.category);
             beerValues.put(BeerContract.BeerEntry.COLUMN_NAME, beer.name);
             beerValues.put(BeerContract.BeerEntry.COLUMN_TYPE, beer.type);
-
+            beerValues.put(BeerContract.BeerEntry.COLUMN_IMAGE_URL, beer.imageUrl);
             beerRows.add(beerValues);
         }
 

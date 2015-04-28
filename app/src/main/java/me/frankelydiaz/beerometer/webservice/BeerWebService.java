@@ -25,15 +25,12 @@ public class BeerWebService {
         restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 
 
-
         final String result = restTemplate.getForObject(url, String.class);
-
 
 
         try {
             final List<Beer> beers = LoganSquare.parseList(result, Beer.class);
-
-           return beers;
+            return beers;
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.facebook.drawee.view.SimpleDraweeView;
+
 import java.util.Arrays;
 
 import me.frankelydiaz.beerometer.R;
@@ -34,7 +36,7 @@ public class BeerAdapter extends CursorAdapter {
         super(context, c, flags);
     }
 
-    private static int getBeerColumnIndex(String column) {
+    public static int getBeerColumnIndex(String column) {
         return Arrays.asList(BEER_COLUMNS).indexOf(column);
     }
 
@@ -52,22 +54,27 @@ public class BeerAdapter extends CursorAdapter {
      */
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-
         final ViewHolder viewHolder = (ViewHolder) view.getTag();
-        final Uri uri = Uri.parse(cursor.getString(getBeerColumnIndex(BeerContract.BeerEntry.COLUMN_IMAGE_URL)));
 
-        //viewHolder.draweeView.setImageURI(uri);
+        final String imageUrl = cursor.getString(getBeerColumnIndex(BeerContract.BeerEntry.COLUMN_IMAGE_URL));
+
+        if (imageUrl != null) {
+            final Uri uri = Uri.parse(imageUrl);
+            viewHolder.draweeView.setImageURI(uri);
+        }
+
+
 
         viewHolder.nameView.setText(cursor.getString(getBeerColumnIndex(BeerContract.BeerEntry.COLUMN_NAME)));
     }
 
     public static class ViewHolder {
         public final TextView nameView;
-        //public final SimpleDraweeView draweeView;
+        public final SimpleDraweeView draweeView;
 
         public ViewHolder(View view) {
             this.nameView = (TextView) view.findViewById(R.id.list_item_beer_textview);
-           // this.draweeView = (SimpleDraweeView) view.findViewById(R.id.list_item_beer_imageview);
+           this.draweeView = (SimpleDraweeView) view.findViewById(R.id.list_item_beer_imageview);
         }
     }
 }

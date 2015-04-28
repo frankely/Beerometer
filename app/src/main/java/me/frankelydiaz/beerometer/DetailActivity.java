@@ -1,45 +1,24 @@
 package me.frankelydiaz.beerometer;
 
-import android.app.ActionBar;
-import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
 
-import me.frankelydiaz.beerometer.sync.BeerometerSyncAdapter;
-
-
-public class HomeActivity extends ActionBarActivity {
+public class DetailActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-        Fresco.initialize(this);
-
-        setContentView(R.layout.activity_home);
-
-        if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new BeerListFragment())
-                    .commit();
-        }
-
-
-        BeerometerSyncAdapter.initializeSyncAdapter(this);
-
-
-
+        setContentView(R.layout.activity_detail);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_home, menu);
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
         return true;
     }
 
@@ -57,5 +36,4 @@ public class HomeActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
 }
