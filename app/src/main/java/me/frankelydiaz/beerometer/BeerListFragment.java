@@ -1,12 +1,11 @@
 package me.frankelydiaz.beerometer;
 
-import android.app.LoaderManager;
-import android.content.CursorLoader;
-import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,18 +13,14 @@ import android.widget.ListView;
 
 import me.frankelydiaz.beerometer.adapter.BeerAdapter;
 import me.frankelydiaz.beerometer.data.BeerContract;
-import me.frankelydiaz.beerometer.task.FetchBeerTask;
 
 /**
  * Created by frankelydiaz on 3/18/15.
  */
-public class BeerListFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
+public class BeerListFragment extends Fragment implements android.support.v4.app.LoaderManager.LoaderCallbacks<Cursor> {
+    private static final int BEERS_LOADER = 0;
     private BeerAdapter mBeerAdapter = new BeerAdapter(getActivity(), null, 0);
 
-    private static final String[] BEER_COLUMNS = {
-            BeerContract.BeerEntry._ID,
-            BeerContract.BeerEntry.COLUMN_NAME
-    };
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -48,14 +43,14 @@ public class BeerListFragment extends Fragment implements LoaderManager.LoaderCa
     public void onStart() {
         super.onStart();
 
-        updateBeers();
+
     }
 
-    private void updateBeers() {
-        FetchBeerTask beerTask = new FetchBeerTask(getActivity());
-        beerTask.execute();
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        getLoaderManager().initLoader(BEERS_LOADER, null, this);
+        super.onActivityCreated(savedInstanceState);
     }
-
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 
@@ -63,19 +58,20 @@ public class BeerListFragment extends Fragment implements LoaderManager.LoaderCa
 
         return new CursorLoader(getActivity(),
                 beerUri,
-                BEER_COLUMNS,
+                BeerAdapter.BEER_COLUMNS,
                 null,
                 null,
                 null);
     }
 
     @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        mBeerAdapter.swapCursor(cursor);
+    public void onLoadFinished(android.support.v4.content.Loader<Cursor> loader, Cursor data) {
+        mBeerAdapter.swapCursor(data);
     }
 
     @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
+    public void onLoaderReset(android.support.v4.content.Loader<Cursor> loader) {
         mBeerAdapter.swapCursor(null);
     }
+
 }

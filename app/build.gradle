@@ -32,6 +32,7 @@ dependencies {
     compile 'org.springframework.android:spring-android-rest-template:2.0.0.M1'
     apt 'com.bluelinelabs:logansquare-compiler:1.0.6'
     compile 'com.bluelinelabs:logansquare:1.0.6'
+    compile 'com.facebook.fresco:fresco:0.4.0+'
 }
 repositories {
     maven {

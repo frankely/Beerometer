@@ -5,12 +5,17 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import me.frankelydiaz.beerometer.sync.BeerometerSyncAdapter;
+
 
 public class HomeActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //Fresco.initialize(this);
+
         setContentView(R.layout.activity_home);
 
         if (savedInstanceState == null) {
@@ -19,6 +24,8 @@ public class HomeActivity extends ActionBarActivity {
                     .commit();
         }
 
+
+        BeerometerSyncAdapter.initializeSyncAdapter(this);
 
     }
 
