@@ -1,6 +1,5 @@
 package me.frankelydiaz.beerometer;
 
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
