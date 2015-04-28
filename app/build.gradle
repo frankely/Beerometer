@@ -38,4 +38,7 @@ repositories {
     maven {
         url 'http://repo.spring.io/milestone'
     }
+    maven {
+        url "https://jitpack.io"
+    }
 }

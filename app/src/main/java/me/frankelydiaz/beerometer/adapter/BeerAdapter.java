@@ -1,9 +1,10 @@
 package me.frankelydiaz.beerometer.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
-import android.support.v4.widget.CursorAdapter;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +14,14 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.Arrays;
 
+import me.frankelydiaz.beerometer.DetailActivity;
 import me.frankelydiaz.beerometer.R;
 import me.frankelydiaz.beerometer.data.BeerContract;
 
 /**
  * Created by frankelydiaz on 3/18/15.
  */
-public class BeerAdapter extends CursorAdapter {
+public class BeerAdapter extends CursorRecyclerViewAdapter<BeerAdapter.ViewHolder> {
 
 
     public static final String[] BEER_COLUMNS = {
@@ -29,11 +31,12 @@ public class BeerAdapter extends CursorAdapter {
             BeerContract.BeerEntry.COLUMN_BREWER,
             BeerContract.BeerEntry.COLUMN_CATEGORY,
             BeerContract.BeerEntry.COLUMN_COUNTRY,
-            BeerContract.BeerEntry.COLUMN_IMAGE_URL
+            BeerContract.BeerEntry.COLUMN_IMAGE_URL,
+            BeerContract.BeerEntry.COLUMN_TYPE
     };
 
-    public BeerAdapter(Context context, Cursor c, int flags) {
-        super(context, c, flags);
+    public BeerAdapter(Context context, Cursor c) {
+        super(context, c);
     }
 
     public static int getBeerColumnIndex(String column) {
@@ -41,20 +44,18 @@ public class BeerAdapter extends CursorAdapter {
     }
 
     @Override
-    public View newView(Context context, Cursor cursor, ViewGroup parent) {
-        final View view = LayoutInflater.from(context).inflate(R.layout.list_item_beer, parent, false);
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+        final View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_beer, parent, false);
         final ViewHolder viewHolder = new ViewHolder(view);
 
-        view.setTag(viewHolder);
-        return view;
+        return viewHolder;
+
+
     }
 
-    /*
-        This is where we fill-in the views with the contents of the cursor.
-     */
     @Override
-    public void bindView(View view, Context context, Cursor cursor) {
-        final ViewHolder viewHolder = (ViewHolder) view.getTag();
+    public void onBindViewHolder(ViewHolder viewHolder, Cursor cursor) {
 
         final String imageUrl = cursor.getString(getBeerColumnIndex(BeerContract.BeerEntry.COLUMN_IMAGE_URL));
 
@@ -63,18 +64,31 @@ public class BeerAdapter extends CursorAdapter {
             viewHolder.draweeView.setImageURI(uri);
         }
 
-
-
         viewHolder.nameView.setText(cursor.getString(getBeerColumnIndex(BeerContract.BeerEntry.COLUMN_NAME)));
+        viewHolder.typeView.setText(cursor.getString(getBeerColumnIndex(BeerContract.BeerEntry.COLUMN_TYPE)));
     }
 
-    public static class ViewHolder {
+
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final TextView nameView;
+        public final TextView typeView;
         public final SimpleDraweeView draweeView;
 
         public ViewHolder(View view) {
+            super(view);
             this.nameView = (TextView) view.findViewById(R.id.list_item_beer_textview);
-           this.draweeView = (SimpleDraweeView) view.findViewById(R.id.list_item_beer_imageview);
+            this.draweeView = (SimpleDraweeView) view.findViewById(R.id.list_item_beer_imageview);
+            this.typeView = (TextView)view.findViewById(R.id.list_item_beer_type_textview);
+
+            view.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+
+            Intent intent = new Intent(super.itemView.getContext(), DetailActivity.class)
+                    .setData(BeerContract.BeerEntry.buildBeerUri(1));
+            super.itemView.getContext().startActivity(intent);
         }
     }
 }

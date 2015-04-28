@@ -26,8 +26,7 @@
     </style>
 
     <style name="ActionBar.Solid.Beerometer.NoTitle" parent="@style/Widget.AppCompat.Light.ActionBar.Solid.Inverse">
-        <item name="displayOptions">useLogo|showHome</item>
-        <item name="logo">@mipmap/ic_action_bar</item>
+
     </style>
 
 

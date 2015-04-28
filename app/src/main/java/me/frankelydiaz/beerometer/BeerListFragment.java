@@ -1,17 +1,16 @@
 package me.frankelydiaz.beerometer;
 
-import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
 import me.frankelydiaz.beerometer.adapter.BeerAdapter;
 import me.frankelydiaz.beerometer.data.BeerContract;
@@ -21,7 +20,8 @@ import me.frankelydiaz.beerometer.data.BeerContract;
  */
 public class BeerListFragment extends Fragment implements android.support.v4.app.LoaderManager.LoaderCallbacks<Cursor> {
     private static final int BEERS_LOADER = 0;
-    private BeerAdapter mBeerAdapter = new BeerAdapter(getActivity(), null, 0);
+    private BeerAdapter mBeerAdapter = new BeerAdapter(getActivity(), null);
+    private RecyclerView.LayoutManager mLayoutManager;
 
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -29,26 +29,24 @@ public class BeerListFragment extends Fragment implements android.support.v4.app
 
 
         // The CursorAdapter will take data from our cursor and populate the ListView.
-        mBeerAdapter = new BeerAdapter(getActivity(), null, 0);
+        mBeerAdapter = new BeerAdapter(getActivity(), null);
 
         View rootView = inflater.inflate(R.layout.fragment_home, container, false);
 
         // Get a reference to the ListView, and attach this adapter to it.
-        ListView listView = (ListView) rootView.findViewById(R.id.beer_list_listview);
-        listView.setAdapter(mBeerAdapter);
+        RecyclerView mRecyclerView = (RecyclerView) rootView.findViewById(R.id.beer_list_listview);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
 
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Cursor cursor = (Cursor) adapterView.getItemAtPosition(position);
-                if (cursor != null) {
-                    Intent intent = new Intent(getActivity(), DetailActivity.class)
-                            .setData(BeerContract.BeerEntry.buildBeerUri(cursor.getLong(BeerAdapter.getBeerColumnIndex(BeerContract.BeerEntry._ID))));
-                    startActivity(intent);
-                }
-            }
-        });
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+
+        mRecyclerView.setAdapter(mBeerAdapter);
+
 
 
         return rootView;
@@ -66,6 +64,7 @@ public class BeerListFragment extends Fragment implements android.support.v4.app
         getLoaderManager().initLoader(BEERS_LOADER, null, this);
         super.onActivityCreated(savedInstanceState);
     }
+
     @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
 

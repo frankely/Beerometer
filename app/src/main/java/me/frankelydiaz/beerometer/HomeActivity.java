@@ -30,6 +30,8 @@ public class HomeActivity extends ActionBarActivity {
 
         BeerometerSyncAdapter.initializeSyncAdapter(this);
 
+        getSupportActionBar().setTitle(R.string.app_name);
+
 
 
     }
