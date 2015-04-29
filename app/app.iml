@@ -93,6 +93,7 @@
     <orderEntry type="library" exported="" name="fbcore-0.4.0" level="project" />
     <orderEntry type="library" exported="" name="cardview-v7-21.0.3" level="project" />
     <orderEntry type="library" exported="" name="recyclerview-v7-21.0.3" level="project" />
+    <orderEntry type="library" exported="" name="CircleView-ea8442e1d7" level="project" />
     <orderEntry type="library" exported="" name="imagepipeline-0.4.0" level="project" />
     <orderEntry type="library" exported="" name="spring-android-core-2.0.0.M1" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-21.0.3" level="project" />

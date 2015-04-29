@@ -33,6 +33,10 @@ public class BeerProvider extends ContentProvider {
             BeerContract.BeerEntry.TABLE_NAME +
                     "." + BeerContract.BeerEntry.COLUMN_ON_SALE + " = ? ";
 
+    private static final String sBeerIdSelection =
+            BeerContract.BeerEntry.TABLE_NAME +
+                    "." + BeerContract.BeerEntry._ID + " = ? ";
+
 
     private Cursor getBeers(String[] projection, String sortOrder) {
 
@@ -50,10 +54,12 @@ public class BeerProvider extends ContentProvider {
     private Cursor getBeer(Uri uri, String[] projection, String sortOrder) {
 
 
+        String id = BeerContract.BeerEntry.getBeerIdFromUri(uri);
+
         return sBeersOnSaleQueryBuilder.query(mOpenHelper.getReadableDatabase(),
                 projection,
-                null,
-                null,
+                sBeerIdSelection, new String[]{ id },
+
                 null,
                 null,
                 sortOrder
@@ -67,7 +73,7 @@ public class BeerProvider extends ContentProvider {
 
 
         matcher.addURI(authority, BeerContract.PATH_BEER, BEER);
-        //matcher.addURI(authority, BeerContract.PATH_BEER + "/*", BEERS_ON_SALE);
+        matcher.addURI(authority, BeerContract.PATH_BEER + "/*", BEER_DETAIL);
 
         return matcher;
     }
@@ -140,7 +146,7 @@ public class BeerProvider extends ContentProvider {
         switch (match) {
             case BEER: {
                 normalizeDate(values);
-                long _id = db.insertWithOnConflict(BeerContract.BeerEntry.TABLE_NAME, null, values,SQLiteDatabase.CONFLICT_REPLACE);
+                long _id = db.insertWithOnConflict(BeerContract.BeerEntry.TABLE_NAME, null, values, SQLiteDatabase.CONFLICT_REPLACE);
                 if (_id > 0)
                     returnUri = BeerContract.BeerEntry.buildBeerUri(_id);
                 else
@@ -213,7 +219,7 @@ public class BeerProvider extends ContentProvider {
                 try {
                     for (ContentValues value : values) {
                         normalizeDate(value);
-                        long _id = db.insertWithOnConflict(BeerContract.BeerEntry.TABLE_NAME, null, value,SQLiteDatabase.CONFLICT_REPLACE);
+                        long _id = db.insertWithOnConflict(BeerContract.BeerEntry.TABLE_NAME, null, value, SQLiteDatabase.CONFLICT_REPLACE);
                         if (_id != -1) {
                             returnCount++;
                         }

@@ -66,28 +66,44 @@ public class BeerAdapter extends CursorRecyclerViewAdapter<BeerAdapter.ViewHolde
 
         viewHolder.nameView.setText(cursor.getString(getBeerColumnIndex(BeerContract.BeerEntry.COLUMN_NAME)));
         viewHolder.typeView.setText(cursor.getString(getBeerColumnIndex(BeerContract.BeerEntry.COLUMN_TYPE)));
+        viewHolder.setBeerId(cursor.getInt(getBeerColumnIndex(BeerContract.BeerEntry._ID)));
+        viewHolder.abvView.setText(cursor.getString(getBeerColumnIndex(BeerContract.BeerEntry.COLUMN_ABV)) + "%");
     }
 
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public final TextView nameView;
         public final TextView typeView;
+        public final TextView abvView;
         public final SimpleDraweeView draweeView;
+
+        private int beerId;
 
         public ViewHolder(View view) {
             super(view);
+
             this.nameView = (TextView) view.findViewById(R.id.list_item_beer_textview);
             this.draweeView = (SimpleDraweeView) view.findViewById(R.id.list_item_beer_imageview);
             this.typeView = (TextView)view.findViewById(R.id.list_item_beer_type_textview);
+            this.abvView = (TextView) view.findViewById(R.id.detail_abv);
 
             view.setOnClickListener(this);
+        }
+
+        public int getBeerId() {
+            return beerId;
+        }
+
+        public void setBeerId(int beerId) {
+            this.beerId = beerId;
         }
 
         @Override
         public void onClick(View v) {
 
+
             Intent intent = new Intent(super.itemView.getContext(), DetailActivity.class)
-                    .setData(BeerContract.BeerEntry.buildBeerUri(1));
+                    .setData(BeerContract.BeerEntry.buildBeerUri(getBeerId()));
             super.itemView.getContext().startActivity(intent);
         }
     }

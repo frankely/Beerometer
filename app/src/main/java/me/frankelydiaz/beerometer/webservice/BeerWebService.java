@@ -17,19 +17,14 @@ public class BeerWebService {
 
     public static List<Beer> getBeers() {
         final String url = "http://ontariobeerapi.ca/beers/";
-
-
         final RestTemplate restTemplate = new RestTemplate();
-
-
         restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 
-
-        final String result = restTemplate.getForObject(url, String.class);
-
-
         try {
+
+            final String result = restTemplate.getForObject(url, String.class);
             final List<Beer> beers = LoganSquare.parseList(result, Beer.class);
+
             return beers;
         } catch (Exception e) {
             e.printStackTrace();

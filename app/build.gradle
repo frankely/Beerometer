@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "me.frankelydiaz.beerometer"
-        minSdkVersion 11
+        minSdkVersion 14
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
@@ -33,6 +33,7 @@ dependencies {
     apt 'com.bluelinelabs:logansquare-compiler:1.0.6'
     compile 'com.bluelinelabs:logansquare:1.0.6'
     compile 'com.facebook.fresco:fresco:0.4.0+'
+    compile 'com.github.pavlospt:CircleView:ea8442e1d7'
 }
 repositories {
     maven {

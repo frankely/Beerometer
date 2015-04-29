@@ -54,6 +54,14 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/secondary_text" />
 
+            <TextView
+                android:textSize="48dp"
+                android:text="Abv"
+                android:id="@+id/detail_abv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/secondary_text" />
+
 
 
         </LinearLayout>
