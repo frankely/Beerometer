@@ -45,7 +45,6 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
 
         }
 
-
         return view;
     }
 

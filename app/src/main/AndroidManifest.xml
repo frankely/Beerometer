@@ -60,6 +60,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="me.frankelydiaz.beerometer.HomeActivity" />
         </activity>
+
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".HomeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="me.frankelydiaz.beerometer.HomeActivity" />
+        </activity>
     </application>
 
 </manifest>
