@@ -9,8 +9,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SyncRequest;
 import android.content.SyncResult;
+import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -28,8 +30,8 @@ public class BeerometerSyncAdapter extends AbstractThreadedSyncAdapter {
     public final String LOG_TAG = BeerometerSyncAdapter.class.getSimpleName();
     // Interval at which to sync with the weather, in seconds.
     // 60 seconds (1 minute) * 180 = 3 hours
-    public static final int SYNC_INTERVAL = 60;
-    public static final int SYNC_FLEXTIME = SYNC_INTERVAL/3;
+    public static final int SYNC_INTERVAL = 60 * 180;
+    public static final int SYNC_FLEXTIME = SYNC_INTERVAL / 3;
 
 
     public BeerometerSyncAdapter(Context context, boolean autoInitialize) {
@@ -41,9 +43,38 @@ public class BeerometerSyncAdapter extends AbstractThreadedSyncAdapter {
         Log.d(LOG_TAG, "Starting sync");
 
 
-        List<Beer> beers = BeerWebService.getBeers();
 
-        storeData(beers);
+
+        final String defaultMinimunAbv = this.getContext().getString(R.string.pref_alcohol_abv_default);
+        final String minimunAbv = PreferenceManager.getDefaultSharedPreferences(this.getContext()).getString(this.getContext().getString(R.string.pref_alcohol_abv_key),defaultMinimunAbv);
+
+        List<Beer> beers = BeerWebService.getBeers(Integer.parseInt(minimunAbv));
+
+        if (needUpdate(beers)) {
+            deleteAllBears();
+            storeData(beers);
+        }
+    }
+
+
+
+    private boolean needUpdate(final List<Beer> beers) {
+        Cursor allBeers = getContext().getContentResolver().query(BeerContract.BeerEntry.CONTENT_URI,
+                null,
+                null,
+                null,
+                null);
+
+        return allBeers.getCount() != beers.size();
+
+    }
+
+    private void deleteAllBears() {
+        getContext().getContentResolver().delete(
+                BeerContract.BeerEntry.CONTENT_URI,
+                null,
+                null
+        );
     }
 
     private void storeData(List<Beer> beers) {
@@ -54,9 +85,6 @@ public class BeerometerSyncAdapter extends AbstractThreadedSyncAdapter {
         List<ContentValues> beerRows = new ArrayList<>();
 
         for (Beer beer : beers) {
-
-            if (beer.imageUrl == null)
-                continue;
 
             ContentValues beerValues = new ContentValues();
             beerValues.put(BeerContract.BeerEntry._ID, beer.beerId);
@@ -104,6 +132,7 @@ public class BeerometerSyncAdapter extends AbstractThreadedSyncAdapter {
 
     /**
      * Helper method to have the sync adapter sync immediately
+     *
      * @param context The context used to access the account service
      */
     public static void syncImmediately(Context context) {
@@ -132,7 +161,7 @@ public class BeerometerSyncAdapter extends AbstractThreadedSyncAdapter {
                 context.getString(R.string.app_name), context.getString(R.string.sync_account_type));
 
         // If the password doesn't exist, the account doesn't exist
-        if ( null == accountManager.getPassword(newAccount) ) {
+        if (null == accountManager.getPassword(newAccount)) {
 
         /*
          * Add the account and account type, no password or user data
@@ -157,7 +186,7 @@ public class BeerometerSyncAdapter extends AbstractThreadedSyncAdapter {
         /*
          * Since we've created an account
          */
-       BeerometerSyncAdapter.configurePeriodicSync(context, SYNC_INTERVAL, SYNC_FLEXTIME);
+        BeerometerSyncAdapter.configurePeriodicSync(context, SYNC_INTERVAL, SYNC_FLEXTIME);
 
         /*
          * Without calling setSyncAutomatically, our periodic sync will not be enabled.

@@ -87,6 +87,7 @@ public class BeerAdapter extends CursorRecyclerViewAdapter<BeerAdapter.ViewHolde
             this.typeView = (TextView)view.findViewById(R.id.list_item_beer_type_textview);
             this.abvView = (TextView) view.findViewById(R.id.detail_abv);
 
+
             view.setOnClickListener(this);
         }
 

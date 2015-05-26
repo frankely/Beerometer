@@ -1,8 +1,10 @@
 package me.frankelydiaz.beerometer;
 
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -14,15 +16,27 @@ import android.view.ViewGroup;
 
 import me.frankelydiaz.beerometer.adapter.BeerAdapter;
 import me.frankelydiaz.beerometer.data.BeerContract;
+import me.frankelydiaz.beerometer.sync.BeerometerSyncAdapter;
 
 /**
  * Created by frankelydiaz on 3/18/15.
  */
-public class BeerListFragment extends Fragment implements android.support.v4.app.LoaderManager.LoaderCallbacks<Cursor> {
+public class BeerListFragment extends Fragment implements android.support.v4.app.LoaderManager.LoaderCallbacks<Cursor>, SharedPreferences.OnSharedPreferenceChangeListener {
     private static final int BEERS_LOADER = 0;
+    private static final String TAG = BeerListFragment.class.getCanonicalName();
     private BeerAdapter mBeerAdapter = new BeerAdapter(getActivity(), null);
     private RecyclerView.LayoutManager mLayoutManager;
 
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity());
+
+
+        prefs.registerOnSharedPreferenceChangeListener(this);
+    }
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -46,7 +60,6 @@ public class BeerListFragment extends Fragment implements android.support.v4.app
 
 
         mRecyclerView.setAdapter(mBeerAdapter);
-
 
 
         return rootView;
@@ -88,4 +101,15 @@ public class BeerListFragment extends Fragment implements android.support.v4.app
         mBeerAdapter.swapCursor(null);
     }
 
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+
+        if (!isAdded())
+            return;
+
+        if (key.equals(getString(R.string.pref_alcohol_abv_key))) {
+            BeerometerSyncAdapter.syncImmediately(getActivity());
+            getLoaderManager().restartLoader(BEERS_LOADER, null, this);
+        }
+    }
 }

@@ -13,6 +13,8 @@ import me.frankelydiaz.beerometer.sync.BeerometerSyncAdapter;
 
 public class HomeActivity extends ActionBarActivity {
 
+    private static final String TAG = HomeActivity.class.getCanonicalName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,5 +62,7 @@ public class HomeActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
 
 }
