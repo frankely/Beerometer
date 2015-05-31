@@ -82,7 +82,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             TextView categoryText = (TextView)getView().findViewById(R.id.category_textview);
             TextView countryText = (TextView)getView().findViewById(R.id.country_textview);
             TextView brewerText = (TextView)getView().findViewById(R.id.brewer_textview);
-            TextView typeText = (TextView)getView().findViewById(R.id.type_textview);
+
             final String imageUrl = data.getString(BeerAdapter.getBeerColumnIndex(BeerContract.BeerEntry.COLUMN_IMAGE_URL));
 
             if (imageUrl != null) {
@@ -96,7 +96,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             categoryText.setText(data.getString(BeerAdapter.getBeerColumnIndex(BeerContract.BeerEntry.COLUMN_CATEGORY)));
             countryText.setText(data.getString(BeerAdapter.getBeerColumnIndex(BeerContract.BeerEntry.COLUMN_COUNTRY)));
             brewerText.setText(data.getString(BeerAdapter.getBeerColumnIndex(BeerContract.BeerEntry.COLUMN_BREWER)));
-            typeText.setText(data.getString(BeerAdapter.getBeerColumnIndex(BeerContract.BeerEntry.COLUMN_TYPE)));
+          
 
 
 
