@@ -10,6 +10,8 @@ import android.content.Context;
 import android.content.SyncRequest;
 import android.content.SyncResult;
 import android.database.Cursor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -43,19 +45,29 @@ public class BeerometerSyncAdapter extends AbstractThreadedSyncAdapter {
         Log.d(LOG_TAG, "Starting sync");
 
 
+        if (hasInternetConnection()) {
+            final String defaultMinimunAbv = this.getContext().getString(R.string.pref_alcohol_abv_default);
+            final String minimunAbv = PreferenceManager.getDefaultSharedPreferences(this.getContext()).getString(this.getContext().getString(R.string.pref_alcohol_abv_key), defaultMinimunAbv);
 
+            List<Beer> beers = BeerWebService.getBeers(Integer.parseInt(minimunAbv));
 
-        final String defaultMinimunAbv = this.getContext().getString(R.string.pref_alcohol_abv_default);
-        final String minimunAbv = PreferenceManager.getDefaultSharedPreferences(this.getContext()).getString(this.getContext().getString(R.string.pref_alcohol_abv_key),defaultMinimunAbv);
-
-        List<Beer> beers = BeerWebService.getBeers(Integer.parseInt(minimunAbv));
-
-        if (needUpdate(beers)) {
-            deleteAllBears();
-            storeData(beers);
+            if (needUpdate(beers)) {
+                deleteAllBears();
+                storeData(beers);
+            }
         }
     }
 
+    private boolean hasInternetConnection() {
+        ConnectivityManager cm =
+                (ConnectivityManager) this.getContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+        return isConnected;
+    }
 
 
     private boolean needUpdate(final List<Beer> beers) {
