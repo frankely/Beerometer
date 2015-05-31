@@ -96,7 +96,7 @@ public class DetailActivityFragment extends Fragment implements LoaderManager.Lo
             categoryText.setText(data.getString(BeerAdapter.getBeerColumnIndex(BeerContract.BeerEntry.COLUMN_CATEGORY)));
             countryText.setText(data.getString(BeerAdapter.getBeerColumnIndex(BeerContract.BeerEntry.COLUMN_COUNTRY)));
             brewerText.setText(data.getString(BeerAdapter.getBeerColumnIndex(BeerContract.BeerEntry.COLUMN_BREWER)));
-          
+
 
 
 

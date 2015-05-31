@@ -1,0 +1,117 @@
+<ScrollView
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:fresco="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/detail_container"
+        android:layout_margin="@dimen/default_margin"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+
+            android:id="@+id/relativelayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/detail_imageview"
+                android:layout_width="@dimen/list_item_thumbnail_layout_width"
+                android:layout_height="@dimen/list_item_thumbnail_layout_height"
+                fresco:placeholderImage="@color/primary"
+                fresco:progressBarImage="@mipmap/ic_sync"
+                fresco:progressBarImageScaleType="centerInside"
+                fresco:progressBarAutoRotateInterval="1000"
+                fresco:actualImageScaleType="fitXY" />
+
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:gravity="fill_horizontal"
+                android:paddingTop="@dimen/small_padding"
+                android:paddingLeft="@dimen/small_padding"
+                android:layout_marginRight="1dp"
+                android:layout_marginTop="1dp"
+                android:orientation="vertical"
+                android:layout_toRightOf="@+id/detail_imageview"
+                android:layout_toEndOf="@+id/detail_imageview"
+                android:layout_alignTop="@+id/detail_imageview">
+
+                <TextView
+                    android:textSize="@dimen/title_size"
+                    android:text="Title"
+                    android:id="@+id/detail_title_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/primary_text" />
+
+                <TextView
+                    android:textSize="@dimen/subtitle_size"
+                    android:text="SubTitle"
+                    android:id="@+id/detail_subtitle_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/secondary_text" />
+
+
+                <TextView
+                    android:textSize="48dp"
+                    android:text="Abv"
+                    android:id="@+id/detail_abv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/secondary_text" />
+
+
+            </LinearLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/default_margin"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="@string/category" />
+
+            <TextView
+                android:id="@+id/category_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/category" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="@string/country" />
+
+            <TextView
+                android:id="@+id/country_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/category" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textStyle="bold"
+                android:text="@string/brewer" />
+
+            <TextView
+                android:id="@+id/brewer_textview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/brewer" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
+

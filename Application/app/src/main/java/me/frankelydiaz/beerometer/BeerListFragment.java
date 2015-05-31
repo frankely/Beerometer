@@ -8,7 +8,7 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,7 +55,7 @@ public class BeerListFragment extends Fragment implements android.support.v4.app
         mRecyclerView.setHasFixedSize(true);
 
         // use a linear layout manager
-        mLayoutManager = new LinearLayoutManager(getActivity());
+        mLayoutManager = new GridLayoutManager(getActivity(),getColumnsSize());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
 
@@ -63,6 +63,10 @@ public class BeerListFragment extends Fragment implements android.support.v4.app
 
 
         return rootView;
+    }
+
+    private int getColumnsSize() {
+        return getResources().getInteger(R.integer.grid_columns);
     }
 
     @Override
